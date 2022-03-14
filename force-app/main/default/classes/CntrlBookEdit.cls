@@ -23,11 +23,11 @@ public class CntrlBookEdit {
      */
     public CntrlBookEdit() {
 
-        // 도서 습득
+        // 파라미터로 넘겨받은 도서 Id를 토대로 도서 정보 가져오기
         book = getBook();
 
         if (book == null) {
-            // 도서 신규 등록
+            // 도서 정보가 없다면 (신규 등록이라면) 새로운 Book__c 개체로 대체
 
             book = new Book__c();
         }
@@ -48,14 +48,16 @@ public class CntrlBookEdit {
         // URL파라미터에서 도서ID를 습득
         ID bookId = ApexPages.currentPage().getParameters().get(ConstUrlParameter.PARAM_NAME_BOOK_ID);
 
-        // 도서ID에 해당하는 
+        // 도서ID에 해당하는 도서 개체 정보 가져오기
         List<Book__c> bookList = DaoBook.findById(bookId);
 
+        // 도서 정보가 없다면 null 리턴
         if (bookList == null || bookList.isEmpty()) {
 
             return null;
         }
 
+        // 도서 정보 리턴 (단독 정보에 대한 검색이므로 get(0)도 유효함)
         return bookList.get(0);
     }
 
@@ -73,6 +75,7 @@ public class CntrlBookEdit {
         // 대여자 정보 설정
         // 조회 관계로 참조중인 개체의 레코드를 참조하는 방법
         // 조회 관계 레코드의 API참조명에서 "__c" 를 "__r"로 변경한 후, 참조중인 개체에서 참조할 레코드의 API참조명을 지정
+
         if (String.isBlank(book.Lender__c)) {
             // 대여자가 지정되지 않은 경우, 도서의 대여자 정보를 클리어
 

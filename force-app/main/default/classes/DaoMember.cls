@@ -30,34 +30,6 @@ public class DaoMember {
     }
 
     /**
-     * @description 최초 화면 입장 시 전체 회원 레코드 SELECT
-     * @return 회원 리스트
-     * 
-     * findBySearchCondition으로 대체 가능
-     */
-    /**
-    public static List<Member__c> findAll() {
-        String soql = ' SELECT '
-                        + ' Id '
-                        + ', Name '
-                        + ', IsLental__c '
-                        + ', ReturnBook__c '
-                        + ', Email__c '
-                        + ', Phone__c '
-                        + ', RegistDate__c '
-                        + ', MemberNo__c '
-                    + ' FROM '
-                        + ' Member__c '
-                    + ' ORDER BY MemberNo__c ASC ';
-        
-        //System.debug('[findAll] soql : ' + soql);
-
-        // SOQL 쿼리 실행, 결과 반환
-        return Database.query(soql);                
-    }
-    */
-
-    /**
      * @description 화면에서 입력한 검색 조건에 해당하는 회원 레코드 SELECT
      * @param scMember 검색 조건용 회원 변수
      * @param scIsLental 대여 유무  
@@ -76,8 +48,7 @@ public class DaoMember {
                         + ', RegistDate__c '
                         + ', MemberNo__c '
                     + ' FROM '
-                        + ' Member__c '
-                    + ' WHERE Id != null ';
+                        + ' Member__c ';
 
         // SOQL 동적 쿼리를 만들기 위한 WHERE문 작성
         String soqlWhere = '';
@@ -85,31 +56,31 @@ public class DaoMember {
         if (String.isNotBlank(scMember.MemberNo__c)) {
             // 검색 조건 [회원 번호]가 지정된 경우, WHERE문에 추가
 
-            soqlWhere += ' AND MemberNo__c = \'' + String.escapeSingleQuotes(scMember.MemberNo__c) + '\' ';
+            soqlWhere += ' MemberNo__c = \'' + String.escapeSingleQuotes(scMember.MemberNo__c) + '\' AND ';
         }
 
         if (String.isNotBlank(scMember.Name)) {
             // 검색 조건 [회원명]이 지정된 경우, WHERE문에 추가
 
-            soqlWhere += ' AND Name LIKE \'%' + String.escapeSingleQuotes(scMember.Name) + '%\' ';
+            soqlWhere += ' Name LIKE \'%' + String.escapeSingleQuotes(scMember.Name) + '%\' AND ';
         }
 
         if (scMember.RegistDate__c != null) {
             // 검색 조건 [회원 등록일]이 지정된 경우, WHERE문에 추가
 
-            soqlWhere += ' AND RegistDate__c = ' + String.escapeSingleQuotes(String.valueOf(scMember.RegistDate__c)) + ' ';
+            soqlWhere += ' RegistDate__c = ' + String.escapeSingleQuotes(String.valueOf(scMember.RegistDate__c)) + ' AND ';
         }
 
         if (String.isNotBlank(scMember.Phone__c)) {
             // 검색 조건 [전화 번호]가 지정된 경우, WHERE문에 추가
 
-            soqlWhere += ' AND Phone__c LIKE \'%' + String.escapeSingleQuotes(scMember.Phone__c) + '%\' ';
+            soqlWhere += ' Phone__c LIKE \'%' + String.escapeSingleQuotes(scMember.Phone__c) + '%\' AND ';
         }
 
         if (String.isNotBlank(scMember.Email__c)) {
             // 검색 조건 [이메일 주소]가 지정된 경우, WHERE문에 추가
 
-            soqlWhere += ' AND Email__c LIKE \'%' + String.escapeSingleQuotes(scMember.Email__c) + '%\' ';
+            soqlWhere += ' Email__c LIKE \'%' + String.escapeSingleQuotes(scMember.Email__c) + '%\' AND ';
         }
 
         if (String.isNotBlank(scIsLental)) {
@@ -117,16 +88,15 @@ public class DaoMember {
 
             scMember.IsLental__c = Boolean.valueOf(scIsLental);
 
-            soqlWhere += ' AND IsLental__c = ' + scMember.IsLental__c + ' ';
+            soqlWhere += ' IsLental__c = ' + scMember.IsLental__c + ' AND ';
         }
 
         if (String.isNotBlank(scMember.ReturnBook__c)) {
             // 검색 조건 [이메일 주소]가 지정된 경우, WHERE문에 추가
 
-            soqlWhere += ' AND ReturnBook__c = \'' + String.escapeSingleQuotes(scMember.ReturnBook__c) + '\' ';
+            soqlWhere += ' ReturnBook__c = \'' + String.escapeSingleQuotes(scMember.ReturnBook__c) + '\' AND ';
         }
 
-        /*
         if (String.isNotBlank(soqlWhere)) {
             // WHERE 조건이 존재하는 경우
 
@@ -136,7 +106,6 @@ public class DaoMember {
             // WHERE 조건문을 작성
             soqlWhere = ' WHERE ' + soqlWhere;
         }
-        */
 
         // 도서 검색을 위한 SOQL 동적 쿼리 작성
         soql = soql + soqlWhere + ' ORDER BY MemberNo__c ASC';

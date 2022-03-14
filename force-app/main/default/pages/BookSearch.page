@@ -16,7 +16,7 @@
                 $.ajax({
                       type: 'GET'
                     , url: 'apex/CntrlBookSearch'
-                    , data: null
+                    , data: XML
                     , success: function(data) {
                         if (data) {
                             alert('test success');
@@ -27,7 +27,7 @@
                 });
             }
         });
-        */
+    */
     </script>
     <apex:form id="form">
         <apex:sectionHeader title="도서 검색"/>
@@ -98,6 +98,7 @@
         <!-- 검색 결과 -->
         <apex:pageBlock title="검색 결과">
             <apex:pageBlockButtons location="both" style="float: right;">
+                <!-- action 태그 내 별도의 URL 관련 속성 지정이 없을 경우 새로고침 작업 -->
                 <apex:commandButton value="도서 추가" action="{!newBook}"/>
             </apex:pageBlockButtons>
 

@@ -1,8 +1,15 @@
 <apex:page controller="CntrlBookEdit" sidebar="false">
     <apex:form id="form">
         <apex:sectionHeader title="도서 편집 정보"/>
+        <!-- 페이지 오류, 경고 등을 표시 할 메시지 공간 설정 -->
         <apex:pageMessages id="messagearea" showDetail="false"/>
 
+        <!-- 
+            Q. 신규 도서 추가는 ISBLANK에 True 연산 되니까 저장, 취소 버튼이 안나오는 건가요? 
+
+            A. 도서 ID가 파라미터로 전달되지 않았다면, new Book() 개체를 생성하므로
+                ISBLANK 연산에 대해 False 연산 처리 됩니다.
+        -->
         <apex:pageBlock rendered="{!NOT(ISBLANK(book))}">
         	<apex:pageBlockButtons >
                 <apex:commandButton value="저장" action="{!save}"/>
@@ -12,7 +19,7 @@
             <!-- 도서 정보 -->
             <apex:pageBlockSection columns="1" showHeader="true" collapsible="true" title="도서 정보">
                 <!-- <apex:inputField> : 자동적으로 레코드의 데이터 타입에 맞는 형식으로 표시해주는 태그
-                    ※무조건 개체의 "레코드 변수"로만 사용 가능
+                    ※무조건 "개체.레코드 변수"로만 사용 가능 (ex: book.BookNo__c)
                 -->
 
                 <apex:pageBlockSectionItem labelStyle="padding-top:5px;">
