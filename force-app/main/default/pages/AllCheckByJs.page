@@ -1,0 +1,31 @@
+<apex:page controller="CntrlAllCheckByJs" sidebar="false">
+    <script type="text/javascript">
+        function checkAll(cb, cbid) {
+            var inputElem = document.getElementsByTagName("input");
+
+            for (var i = 0; i < inputElem.length; i++) {
+                if (inputElem[i].id.indexOf(cbid) != -1) {
+                    inputElem[i].checked = cb.checked;
+                }
+            }
+        }
+    </script>
+
+    <apex:form id="form">
+        <apex:pageBlock title="체크박스 전체 선택/해제">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton id="btnGetSelItems" value="선택" action="{!getSelectedItem}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockTable value="{!memWrapperList}" var="member" style="width: 10%;">
+                <apex:column style="width: 2%; text-align: center;">
+                    <apex:facet name="header">
+                        <apex:inputCheckbox id="checkAll" onclick="checkAll(this, 'selectRow')"/>
+                    </apex:facet>
+                    <apex:inputCheckbox id="selectRow" value="{!member.isSelected}"/>
+                </apex:column>
+
+                <apex:column value="{!member.memName}" headerValue="회원 이름" style="width:8%;"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
