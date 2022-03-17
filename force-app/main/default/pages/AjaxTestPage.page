@@ -10,7 +10,7 @@
 
     <apex:pageBlock title="AjaxData">
         <apex:outputPanel id="ajaxresult" layout="block">
-            Result: {!CurrTime}
+            <apex:outputText value="{!currTime}"/>
         </apex:outputPanel>
     </apex:pageBlock>
 </apex:page>

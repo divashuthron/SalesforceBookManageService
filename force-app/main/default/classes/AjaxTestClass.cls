@@ -5,7 +5,7 @@ global with sharing class AjaxTestClass {
         currTime = System.now().format('EEEE, MMMM d, yyyy - hh:mm:ss');
     }
 
-    public String getCurrTime()  {
+    public String getCurrTime() {
         return currTime;
     }
 }
