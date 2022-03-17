@@ -1,0 +1,98 @@
+<!--
+    변수
+        Name                                            Type                        document
+        ================================================================================================
+        engravingProbability                            Int                         확률
+        
+        engravingA                                      String                      선택한 각인1
+        engravingB                                      String                      선택한 각인1
+        negativeEngraving                               String                      선택한 감소각인
+
+        engravingList                                   List<SelectOption>          각인 목록
+        negativeEngravingList                           List<SelectOption>          감소각인 목록
+
+        renderEngravingA                                String                      각인1 세공 현황
+        renderEngravingB                                String                      각인2 세공 현황
+        renderNegativeEngraving                         String                      감소각인 세공 현황
+
+    매개변수
+        Name                                            Type                        document
+        ================================================================================================
+        engravingType                                   String                      세공을 진행 할 라인
+
+    메서드
+        Name                        Parameter           Type                        document
+        ================================================================================================
+        craft                       String              void                        세공 처리
+        save                                            PageReference               결과 저장
+
+-->
+
+<!--
+    참고자료
+        1. 새로운 각인 설정 시, 기존에 진행한 세공 내용을 전부 초기화하는 기능
+            >> https://developer.salesforce.com/forums/?id=906F000000098u1IAA
+-->
+
+<apex:page controller="CntrlStone" sidebar="false">
+    <style>
+        .selList {
+            width: 8%;
+        }
+        .oupText {
+            width: 30%;
+        }
+        .cmdBtn {
+            width: 2%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function() {
+            
+        });
+    </script>
+    <apex:form id="form">
+        <apex:pageMessages id="messagearea" showDetail="false"/>
+
+        <apex:pageBlock id="engravingBlock" title="세공　[확률: {!engravingProbability}%]">
+            <apex:pageBlockButtons location="bottom" style="float: right;">
+                <apex:commandButton value="다시하기" action="{!reset}" reRender="engravingBlock"/>
+                <!-- apex:commandButton value="결과 저장" action="{!save}"/ -->
+            </apex:pageBlockButtons>
+
+            <apex:outputText value="각인1"/>
+            <br/>
+            <apex:selectList value="{!engravingA}" size="1" styleClass="selList">
+                <apex:selectOptions value="{!engravingList}"/>
+            </apex:selectList>&nbsp;
+            <apex:outputText value="{!renderEngravingA}" styleClass="oupText"/>&nbsp;
+            <apex:commandButton value="✔" action="{!craft}" reRender="engravingBlock" styleClass="cmdBtn">
+                <apex:param name="engravingType" value="A" assignTo="{!engravingType}"/>
+            </apex:commandButton>
+            <br/><br/>
+
+            <apex:outputText value="각인2"/>
+            <br/>
+            <apex:selectList value="{!engravingB}" size="1" styleClass="selList">
+                <apex:selectOptions value="{!engravingList}"/>
+            </apex:selectList>&nbsp;
+            <apex:outputText value="{!renderEngravingB}" styleClass="oupText"/>&nbsp;
+            <apex:commandButton value="✔" action="{!craft}" reRender="engravingBlock" styleClass="cmdBtn">
+                <apex:param name="engravingType" value="B" assignTo="{!engravingType}"/>
+            </apex:commandButton>
+            <br/><br/>
+
+            <apex:outputText value="감소각인"/>
+            <br/>
+            <apex:selectList value="{!negativeEngraving}" size="1" styleClass="selList">
+                <apex:selectOptions value="{!negativeEngravingList}"/>
+            </apex:selectList>&nbsp;
+            <apex:outputText value="{!renderNegativeEngraving}" styleClass="oupText"/>&nbsp;
+            <apex:commandButton value="✔" action="{!craft}" reRender="engravingBlock" styleClass="cmdBtn">
+                <apex:param name="engravingType" value="C" assignTo="{!engravingType}"/>
+            </apex:commandButton>
+            <br/><br/>
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
